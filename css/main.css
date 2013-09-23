@@ -9,7 +9,7 @@ html, body {
     height:100%;
 }
 body{
-    font-size:24px;
+    font-size:18px;
     background-color: #459399;
     color:#333;
     font-family: 'Raleway', sans-serif;
@@ -50,7 +50,9 @@ code {
     -webkit-border-radius:3px;
     border-radius:3px;
 }
-
+pre.small {
+    font-size:.6em;
+}
 .container {
     margin: auto;
     max-width: 90%;

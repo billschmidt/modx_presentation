@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var effects = ['fade', 'drop', 'puff'];
-    $('body').on('keypress', function(e){
+    $('body').on('keydown', function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
         var cur = $('section.active');
         if (code == 37){

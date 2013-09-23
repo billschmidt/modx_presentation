@@ -16,6 +16,7 @@
             <h3>MODX Nashville</h3>
             <p><strong>Web: </strong><a href="http://www.meetup.com/modxnashville/" target="_blank">http://www.meetup.com/modxnashville/</a></p>
             <p><strong>Twitter: </strong><a href="https://twitter.com/MODXNashville" target="_blank">@MODXNashville</a></p>
+            <p><strong>Emma WiFi password: </strong>21208thave</p>
         </section>
 
         <section style="display:none;">
@@ -31,7 +32,77 @@
         </section>
 
         <section style="display:none;">
+            <h2>Form Markup</h2>
+            <pre class="prettyprint">
+&lt;form action="[[~[[*id]]]]" method="post"&gt;
+    &lt;label&gt;Name: [[+fi.error.name]]
+        &lt;input type="text" name="name" class="required" value="[[+fi.name]]"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;Email Address: [[+fi.error.email]]
+        &lt;input type="text" name="email" class="required" value="[[+fi.email]]"&gt;
+    &lt;/label&gt;
+    &lt;label&gt;Comments or Questions: [[+fi.error.comments]]
+        &lt;textarea name="comments" class="required"&gt;[[+fi.comments]]&lt;/textarea&gt;
+    &lt;/label&gt;
+
+    &lt;input type="submit" value="Submit" /&gt;
+&lt;/form&gt;
+            </pre>
+        </section>
+
+        <section style="display:none;">
             <h2>FormIt</h2>
+            <pre class="prettyprint">
+[[!FormIt?
+    &hooks=`spam,email,FormItAutoResponder,redirect`
+    &redirectTo=`[[+thanksPage]]`
+    &validate=`name:required,email:required:email,comments:required`
+
+    &emailTpl=`[[+emailTpl]]`
+    &emailSubject=`[[+emailSubject]]`
+    &emailTo=`[[+emailTo]]`
+
+    &fiarTpl=`contact-form-fiar`
+    &fiarTo=`email`
+    &fiarSender=`[[++emailsender]]`
+    &fiarFrom=`[[++emailsender]]`
+    &fiarFromName=`[[++site_name]]`
+    &fiarReplyTo=`[[++emailsender]]`
+    &fiarSubject=`[[++site_name]]: Contact Form`
+]]
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h2>Chunks</h2>
+            <h3>contact-form-email</h3>
+            <pre class="prettyprint">
+&lt;p&gt;The following contact form was sent by the [[++site_name]] Contact Form:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Name:&lt;/strong&gt; [[+name]]&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Email Address:&lt;/strong&gt; [[+email]]&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Comments or Questions:&lt;/strong&gt; [[+comments]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can use this link to reply:
+    &lt;a href="mailto:[[+email]]?subject=RE: [[++site_name]]: Contact Form"&gt;[[+email]]&lt;/a&gt;
+&lt;/p&gt;
+            </pre>
+            <h3>contact-form-email</h3>
+            <pre class="prettyprint">
+&lt;p&gt;Thank you for your contact form submission. You should hear from one of our representatives shortly.&lt;/p&gt;
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h2>Using the contact form</h2>
+            <pre class="prettyprint">
+[[$contact-form?
+	&thanksPage=`17`
+	&emailTpl=`contact-form-email`
+	&emailSubject=`[[++site_name]]: Contact Form`
+	&emailTo=`info@example.com`
+]]
+            </pre>
         </section>
 
     </div>

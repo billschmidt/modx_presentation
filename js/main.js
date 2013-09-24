@@ -24,4 +24,6 @@ $(document).ready(function(){
             });
         });
     });
+
+    if (window.location.hash != '') $(window).trigger('hashchange');
 });

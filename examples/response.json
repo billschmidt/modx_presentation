@@ -1,0 +1,29 @@
+[[!FormIt?
+    &hooks=`spam,email,FormItAutoResponder,saveFormIt`
+    &validate=`name:required,email:required:email,comments:required`
+
+    &emailTpl=`[[+emailTpl]]`
+    &emailSubject=`[[+emailSubject]]`
+    &emailTo=`[[+emailTo]]`
+
+    &fiarTpl=`contact-form-fiar`
+    &fiarTo=`email`
+    &fiarSender=`[[++emailsender]]`
+    &fiarFrom=`[[++emailsender]]`
+    &fiarFromName=`[[++site_name]]`
+    &fiarReplyTo=`[[++emailsender]]`
+    &fiarSubject=`[[++site_name]]: Contact Form`
+]]
+{
+    "validation_error" : [[!+fi.validation_error]],
+    "validation_error_message" : "[[!+fi.validation_error_message:htmlentities]]",
+    "error_message" : "[[!+fi.error_message:htmlentities]]",
+    "errors" : {
+        "name" : "[[!+fi.error.name:htmlentities]]",
+        "email" : "[[!+fi.error.email:htmlentities]]",
+        "comments" : "[[!+fi.error.comments:htmlentities]]",
+        "resource" : "[[!+fi.error.resource:htmlentities]]"
+    },
+    "success" : "Thank you for your contact form submission. You should hear from one of our representatives shortly.",
+    "failure" : "Please correct the errors below."
+}

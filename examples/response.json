@@ -15,7 +15,7 @@
     &fiarSubject=`[[++site_name]]: Contact Form`
 ]]
 {
-    "validation_error" : [[!+fi.validation_error]],
+    "validation_error" : [[!+fi.validation_error:default=`0`]],
     "validation_error_message" : "[[!+fi.validation_error_message:htmlentities]]",
     "error_message" : "[[!+fi.error_message:htmlentities]]",
     "errors" : {

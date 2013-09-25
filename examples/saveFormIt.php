@@ -1,5 +1,5 @@
 <?php
-
+// saveFormIt
 $query = 'insert into `form_submissions` (`name`, `email`, `comment`) values (:name, :email, :comments)';
 $values = array(
     ':name' => $hook->getValue('name'),

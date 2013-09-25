@@ -17,6 +17,11 @@
             <p><strong>Web: </strong><a href="http://www.meetup.com/modxnashville/" target="_blank">http://www.meetup.com/modxnashville/</a></p>
             <p><strong>Twitter: </strong><a href="https://twitter.com/MODXNashville" target="_blank">@MODXNashville</a></p>
             <p><strong>Emma WiFi password: </strong>21208thave</p>
+            <h3>MODX News</h3>
+            <ul>
+                <li>MODX Revolution 2.2.9 released 8/29/2013</li>
+                <li><a href="http://2013.modxpo.eu/" target="_blank">Register</a> for MODXpo 2013, November 1<sup>st</sup> &amp; 2<sup>nd</sup></li>
+            </ul>
         </section>
 
         <section style="display:none;">
@@ -26,8 +31,8 @@
                 <li>BS in Computer Science from SUNYIT</li>
                 <li>Moved to Nashville in February 2012</li>
                 <li>Works at <a href="http://www.darkstardesign.com" target="_blank">Darkstar Design</a></li>
-                <li><strong>Twitter: </strong><a href="https://twitter.com/septuplicate">@septuplicate</a></li>
-                <li><strong>GitHub: </strong><a href="https://github.com/billschmidt">https://github.com/billschmidt</a></li>
+                <li><strong>Twitter: </strong><a href="https://twitter.com/septuplicate" target="_blank">@septuplicate</a></li>
+                <li><strong>GitHub: </strong><a href="https://github.com/billschmidt" target="_blank">https://github.com/billschmidt</a></li>
             </ul>
         </section>
 
@@ -35,14 +40,17 @@
             <h2>Form Markup</h2>
             <pre class="prettyprint">
 &lt;form action="[[~[[*id]]]]" method="post"&gt;
-    &lt;label&gt;Name: [[+fi.error.name]]
+    &lt;label&gt;Name:
         &lt;input type="text" name="name" class="required" value="[[+fi.name]]"&gt;
+        [[+fi.error.name]]
     &lt;/label&gt;
-    &lt;label&gt;Email Address: [[+fi.error.email]]
+    &lt;label&gt;Email Address:
         &lt;input type="text" name="email" class="required" value="[[+fi.email]]"&gt;
+        [[+fi.error.email]]
     &lt;/label&gt;
-    &lt;label&gt;Comments or Questions: [[+fi.error.comments]]
+    &lt;label&gt;Comments or Questions:
         &lt;textarea name="comments" class="required"&gt;[[+fi.comments]]&lt;/textarea&gt;
+        [[+fi.error.comments]]
     &lt;/label&gt;
 
     &lt;input type="submit" value="Submit" /&gt;
@@ -87,7 +95,7 @@
     &lt;a href="mailto:[[+email]]?subject=RE: [[++site_name]]: Contact Form"&gt;[[+email]]&lt;/a&gt;
 &lt;/p&gt;
             </pre>
-            <h3>contact-form-email</h3>
+            <h3>contact-form-fiar</h3>
             <pre class="prettyprint">
 &lt;p&gt;Thank you for your contact form submission. You should hear from one of our representatives shortly.&lt;/p&gt;
             </pre>
@@ -126,7 +134,7 @@
             <img src="images/content-type.png" alt="Content Type JSON">
             <pre class="prettyprint">
 {
-    "validation_error" : [[!+fi.validation_error]],
+    "validation_error" : [[!+fi.validation_error:default=`0`]],
     "validation_error_message" : "[[!+fi.validation_error_message:htmlentities]]",
     "error_message" : "[[!+fi.error_message:htmlentities]]",
     "errors" : {
@@ -160,7 +168,7 @@
     &fiarSubject=`[[++site_name]]: Contact Form`
 ]]
 {
-    "validation_error" : [[!+fi.validation_error]],
+    "validation_error" : [[!+fi.validation_error:default=`0`]],
     "validation_error_message" : "[[!+fi.validation_error_message:htmlentities]]",
     "error_message" : "[[!+fi.error_message:htmlentities]]",
     "errors" : {
@@ -197,31 +205,33 @@
 
         <section style="display:none;">
             <pre class="prettyprint">
-$('form.ajax').on('submit', function(){
-    var f = $(this);
-    $.ajax({
-        type: f.attr('method'),
-        url: f.attr('action'),
-        data: f.find('input, textarea, select').serialize(),
-        success: function(data){
-            f.find('.error').remove();
-            if (data.validation_error == 1) {
-                for(var x in data.errors){
-                    f.find('[name="' + x + '"]').after($('&lt;div&gt;').html(data.errors[x]).text());
+$(document).ready(function(){
+    $('form.ajax').on('submit', function(){
+        var f = $(this);
+        $.ajax({
+            type: f.attr('method'),
+            url: f.attr('action'),
+            data: f.find('input, textarea, select').serialize(),
+            success: function(data){
+                f.find('.error').remove();
+                if (data.validation_error == 1 || data.error_message != '') {
+                    for(var x in data.errors){
+                        f.find('[name="' + x + '"]').after($('&lt;div&gt;').html(data.errors[x]).text());
+                    }
+                    f.prepend('&lt;p class="failure"&gt;' + $('&lt;div&gt;').html(data.failure).text() + '&lt;/p&gt;');
+                } else {
+                    f.prepend('&lt;p class="success"&gt;' + $('&lt;div&gt;').html(data.success).text() + '&lt;/p&gt;');
                 }
-                f.prepend('&lt;p class="failure"&gt;' + $('&lt;div&gt;').html(data.failure).text() + '&lt;/p&gt;');
-            } else {
-                f.prepend('&lt;p class="success"&gt;' + $('&lt;div&gt;').html(data.success).text() + '&lt;/p&gt;');
             }
-        }
+        });
+        return false;
     });
-    return false;
 });
             </pre>
         </section>
 
         <section style="display:none;">
-            <p style="text-align: center; height:100%;"><img src="images/ajax.jpg" alt="AJAX all the things!" style="height:100%;"></p>
+            <p style="text-align: center; height:100%;"><img src="images/srsly.jpg" alt="AJAX all the things!" style="height:100%;"></p>
         </section>
 
         <section style="display:none;">
@@ -231,13 +241,146 @@ $('form.ajax').on('submit', function(){
 [[!FormIt?
     &hooks=`spam,email,FormItAutoResponder,saveFormIt`
     ...
+]]
+{
+    "errors" : [
+        ...
+        "resource" : "[[!+fi.error.resource:htmlentities]]"
+        ...
+    ]
+}
             </pre>
+
         </section>
         <section style="display:none;">
+            <h3>Create a table for our results</h3>
+            <pre class="prettyprint">
+create table `form_submissions` (
+  id int unsigned not null auto_increment,
+  `name` varchar(255),
+  `email` varchar(255),
+  `comments` text,
+  `date` timestamp default current_timestamp,
+  primary key (`id`),
+  fulltext(`name`, `email`, `comments`)
+) ENGINE=MyISAM;
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h3>Write a snippet to save form submissions</h3>
             <pre class="prettyprint">
 &lt;?php
+// saveFormIt
+$query = 'insert into `form_submissions` (`name`, `email`, `comments`) values (:name, :email, :comments)';
+$values = array(
+    ':name' => $hook->getValue('name'),
+    ':email' => $hook->getValue('email'),
+    ':comments' => $hook->getValue('comments'),
+);
 
+$criteria = new xPDOCriteria($modx, $query, $values);
+if (!$criteria->prepare() || !$criteria->stmt->execute()) {
+    $hook->addError('resource', 'An error has occurred.');
+    return false;
+}
+return true;
             </pre>
+        </section>
+
+        <section style="display:none;">
+            <h3>Snippet to show form submissions</h3>
+            <pre class="prettyprint">
+&lt;?php
+// showFormIt
+$tpl = isset($tpl) ? $tpl : 'submission';
+
+$query = 'select `name`, `email`, `comment`, `date` from `form_submissions`';
+
+$criteria = new xPDOCriteria($modx, $query, $values);
+if (!$criteria->prepare() || !$criteria->stmt->execute()) {
+    echo __LINE__ . ' : ' . print_r($modx->errorInfo(), true) . '<br>';
+    return '';
+}
+
+$output = '';
+while($row = $criteria->stmt->fetch(PDO::FETCH_ASSOC)){
+    $output .= $modx->getChunk($tpl, $row);
+}
+return $output;
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h3>Write a chunk</h3>
+            <pre class="prettyprint">
+&lt;div class="submission"&gt;
+    &lt;p class="timestamp"&gt;[[+date]]&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;strong&gt;Name:&lt;/strong&gt; [[+name]]&lt;/li&gt;
+        &lt;li&gt;&lt;strong&gt;Email Address:&lt;/strong&gt; [[+email]]&lt;/li&gt;
+        &lt;li&gt;&lt;strong&gt;Comments:&lt;/strong&gt; [[+comments]]&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;You can use this link to reply:
+        &lt;a href="mailto:[[+email]]?subject=RE: [[++site_name]]: Contact Form"&gt;[[+email]]&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/div&gt;                
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h2>What about saving as a resource?</h2>
+            <pre class="prettyprint small">
+&lt;?php
+$alias = date('y-m-d').strtolower(preg_replace('/^[a-z0-9]/', '', $hook->getValue('name')));
+$resource = $modx->runProcessor('resource/create', array(
+	'parent' => 14,
+	'alias' => $alias,
+	'pagetitle' => date('y-m-d').' - '.$hook->getValue('name'),
+	'template' => 3,
+	'publishedon' => time(),
+	'published' => 1,
+	'cacheable' => 1,
+	'hidemenu' => 0,
+	'createdby' => $modx-user->get('id'),
+));
+
+if ($resource->isError()){
+	if ($resource->hasFieldErrors()) {
+		$fieldErrors = $resource->getAllErrors();
+		$errorMessage = implode("\n", $fieldErrors);
+	} else {
+		$errorMessage = 'An error occurred: ' . $resource->getMessage();
+	}
+	$modx->log(xPDO::LOG_LEVEL_FATAL,$errorMessage);
+	$hook->addError('resource', $errorMessage);
+	return false;
+}
+
+$content = '';
+$fields = $hook->getValues();
+foreach($fields as $key => $val) {
+	$content .= '&lt;p>&lt;strong>'.$key.'&lt;/strong>: '.$val.'&lt;/p>';
+}
+//modx is a liar, you get an array, not an object
+$object = $resource->getObject();
+$id = $object['id'];
+$resource = $modx->getObject('modDocument', $id);
+$resource->setContent($content);
+return $resource->save();
+            </pre>
+        </section>
+
+        <section style="display:none;">
+            <h2>Further improvements</h2>
+            <ul>
+                <li>Add submission results page to manager menu.</li>
+                <li>Implement a Turing test to further reduce spam.</li>
+                <li>Add a limit and offset to showFormIt for pagination.</li>
+                <li>Add a search to showFormIt with match...against.</li>
+            </ul>
+            <h3><a href="http://modxnashville.com/formit-presentation/contact-form" target="_blank">Demo Contact Form</a></h3>
+            <h3>Questions?</h3>
         </section>
     </div>
 

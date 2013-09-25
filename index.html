@@ -295,7 +295,7 @@ return true;
 // showFormIt
 $tpl = isset($tpl) ? $tpl : 'submission';
 
-$query = 'select `name`, `email`, `comment`, `date` from `form_submissions`';
+$query = 'select `name`, `email`, `comments`, `date` from `form_submissions`';
 
 $criteria = new xPDOCriteria($modx, $query, $values);
 if (!$criteria->prepare() || !$criteria->stmt->execute()) {

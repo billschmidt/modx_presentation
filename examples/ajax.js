@@ -12,7 +12,7 @@ $(document).ready(function(){
             url: f.attr('action'),
             data: f.find('input, textarea, select').serialize(),
             success: function(data){
-                f.find('.error').remove();
+                f.find('.error, .failure, .success').remove();
                 console.log(data);
                 if (data.validation_error == 1 || data.error_message != '') {
                     for(var x in data.errors){
